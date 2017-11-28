@@ -1,0 +1,113 @@
+/**
+ * Various Utilities
+ */
+
+
+/**
+ * TODO: Need to finish
+ */
+task scrub(type:Exec){
+
+//    dependsOn build
+//    doLast {  // or doFirst depending on the behaviour you want
+//        print  "test"
+//    }
+
+/**
+ * I need to perform the following:
+ * Delete directories:
+ * -------------------
+ * find . -name bin -type d -exec rm -rf {} \;
+ * find . -name out -type d -exec rm -rf {} \;
+ * find . -name .settings -type d -exec rm -rf {} \;
+ */
+    workingDir "${project.rootDir}"
+
+    //on windows:
+//    commandLine "cmd", "/c", "stop.bat"
+
+    //on linux
+    commandLine "find . -name bin -type d -exec rm -rf {} \\;"
+    commandLine "find . -name out -type d -exec rm -rf {} \\;"
+    commandLine "find . -name .settings -type d -exec rm -rf {} \\;"
+
+//    commandLine "rm -rf ${HOME}/.gradle/caches/"
+//    commandLine "rm -rf ${HOME}/.gradle/daemon/"
+
+
+    /*
+    (from project root) ./gradlew cleanBuildCache
+
+Clearing Gradle install cache:
+-
+rm -rf $HOME/.gradle/caches/
+rm -rf $HOME/.gradle/daemon/
+
+     */
+    commandLine "find . -name .settings -type d -exec rm -rf {} \\;"
+
+    //store the output instead of printing to the console:
+    standardOutput = new ByteArrayOutputStream()
+
+    // extension method stopTomcat.output() can be used to obtain the output:
+    ext.output = {
+        return standardOutput.toString()
+    }
+
+
+
+//    workingDir "../tomcat/bin"
+//
+//    //on windows:
+//    commandLine "cmd", "/c", "stop.bat"
+//
+//    //on linux
+//    commandLine "./stop.sh"
+//
+//    //store the output instead of printing to the console:
+//    standardOutput = new ByteArrayOutputStream()
+//
+//    // extension method stopTomcat.output() can be used to obtain the output:
+//    ext.output = {
+//        return standardOutput.toString()
+//    }
+
+
+}
+
+//check.dependsOn projectReport
+
+
+
+
+//task hello( type: Copy ) {
+        // Taking the output from another task:
+//    from( tasks.jar )
+//    into( new File( buildDir, "${name}Outputs" ) )  // copies into build/helloOutputs
+//}
+
+def myCopySpec = project.copySpec {
+    into("config/idea")
+    exclude("**/.data/**")
+    from("${project.rootDir}/.idea/runConfigurations") {
+        include "**/*.xml"
+    }
+}
+
+/**
+ * ./gradlew saveIdeaConfig
+ */
+//DuplicatesStrategy.INCLUDE
+//specPropertyName + ".duplicatesStrategy"
+
+task exportIdea( type: Copy ) {
+    //./config/idea/runConfigurations
+    from( "${project.rootDir}/.idea/runConfigurations" )
+    into( "${project.rootDir}/config/idea/runConfigurations" )
+}
+
+task restoreIdeaConfig( type: Copy ) {
+    //./config/idea/runConfigurations
+    from( "${project.rootDir}/config/idea/runConfigurations" )
+    into( "${project.rootDir}/.idea/runConfigurations" )
+}

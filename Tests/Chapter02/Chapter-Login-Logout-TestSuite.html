@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Chapter-Login-Logout-TestSuite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">login-event-logout</td></tr>
+</thead>
+<tbody>
+<tr>
+    <td>open</td>
+    <td>http://localhost:8080/login/form?logout
+        <datalist>
+            <option>http://localhost:8080/login/form?logout</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=username
+        <datalist>
+            <option>id=username</option>
+            <option>name=username</option>
+            <option>//input[@id='username']</option>
+            <option>//input</option>
+        </datalist>
+    </td>
+    <td>user1@example.com</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=password
+        <datalist>
+            <option>id=password</option>
+            <option>name=password</option>
+            <option>//input[@id='password']</option>
+            <option>//input[2]</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>id=password
+        <datalist>
+            <option>id=password</option>
+            <option>name=password</option>
+            <option>//input[@id='password']</option>
+            <option>//input[2]</option>
+        </datalist>
+    </td>
+    <td>user1</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=submit
+        <datalist>
+            <option>id=submit</option>
+            <option>name=submit</option>
+            <option>//input[@id='submit']</option>
+            <option>//div/input</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=navMyEventsLink
+        <datalist>
+            <option>id=navMyEventsLink</option>
+            <option>link=My Events</option>
+            <option>//a[contains(text(),'My Events')]</option>
+            <option>//a[@id='navMyEventsLink']</option>
+            <option>//div[@id='navbar']/ul/li[3]/a</option>
+            <option>//a[contains(@href, '/events/my')]</option>
+            <option>//li[3]/a</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>link=Birthday Party
+        <datalist>
+            <option>link=Birthday Party</option>
+            <option>//a[contains(text(),'Birthday Party')]</option>
+            <option>//a[contains(@href, '/events/100')]</option>
+            <option>//td[4]/a</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=navLogoutLink
+        <datalist>
+            <option>id=navLogoutLink</option>
+            <option>link=Logout</option>
+            <option>//a[contains(text(),'Logout')]</option>
+            <option>//a[@id='navLogoutLink']</option>
+            <option>//div[@id='navbar']/ul[2]/li[2]/a</option>
+            <option>//a[contains(@href, '/logout')]</option>
+            <option>//ul[2]/li[2]/a</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

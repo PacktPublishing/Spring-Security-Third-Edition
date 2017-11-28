@@ -1,47 +1,48 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+### .gitignore ###
 
-# Folder config file
-Desktop.ini
+.gradle
+/build/
+out/
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+!gradle/wrapper/gradle-wrapper.jar
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+!.circleci
 
-# Windows shortcuts
-*.lnk
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
 
-# =========================
-# Operating System Files
-# =========================
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
-# OSX
-# =========================
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
+bin/
+
+### Other ignores ###
+
+target/
 .DS_Store
-.AppleDouble
-.LSOverride
 
-# Thumbnails
-._*
+*.bak
+*.diff
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+### Vagrant
+.vagrant/
+*.box
+
+### THE END ###

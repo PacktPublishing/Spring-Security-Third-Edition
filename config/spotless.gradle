@@ -1,0 +1,28 @@
+/**
+ * Spotless Configuration
+ *
+ */
+apply plugin: 'nebula.lint'
+
+def configDir = "${project.rootDir}/config"
+def reportOut = "${project.buildDir}/reports/spotless"
+
+
+/**
+ * https://github.com/diffplug/spotless/tree/master/plugin-gradle
+ *
+ * to apply the changes:
+ * gradle spotlessApply
+ */
+/*spotless {
+    java {
+        googleJavaFormat() // googleJavaFormat('1.1') to specify a specific version
+        // you can then layer other format steps, such as
+//            licenseHeaderFile "spotless.license"
+        paddedCell()
+    }
+}*/
+
+//check {
+//    dependsOn += ["spotless"]
+//}

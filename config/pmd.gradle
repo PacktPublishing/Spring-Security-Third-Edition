@@ -1,0 +1,69 @@
+/**
+ * PMD Configuration
+ *
+ * https://docs.gradle.org/current/userguide/pmd_plugin.html
+ * https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.Pmd.html
+ * https://docs.gradle.org/current/dsl/org.gradle.api.plugins.quality.PmdExtension.html
+ */
+apply plugin: "pmd"
+
+def configDir = "${project.rootDir}/config/pmd"
+def reportsOut = "${project.buildDir}/reports/pmd"
+
+
+pmd {
+    sourceSets = [sourceSets.main]
+    ignoreFailures = true
+    ruleSets = []
+    ruleSetFiles = files("${configDir}/pmd-rulesets.xml")
+//    ruleSetFiles = files("${configDir}/pmd-rulesets-2.xml")
+}
+
+task pmd(type: Pmd, group: 'verification') {
+
+    source = fileTree("${project.projectDir}/src/main/java/")
+    include '**/*.java'
+
+    reports {
+        xml {
+            enabled = true
+            destination = file("${reportsOut}/pmd.xml")
+        }
+        html {
+            enabled = false
+            destination = file("${reportsOut}/pmd.html")
+        }
+    }
+}
+
+
+task pmdReport(group: "verification",
+        description: "Generates a HTML report after executing PMD checks."){
+    doLast {
+        ant.xslt(
+                in: file("${reportsOut}/pmd.xml"),
+                style: file("${configDir}/pmd-nicerhtml.xsl"),
+//            style: file("${configDir}/pmd-report.xslt"),
+//            style: file("${configDir}/pmd-report-per-class.xslt"),
+                out: file("${reportsOut}/index.html")
+        )
+    }
+}
+
+/*task pmdReport(group: "verification",
+        description: "Generates a HTML report after executing PMD checks.") << {
+    ant.xslt(
+            in: file("${reportsOut}/pmd.xml"),
+            style: file("${configDir}/pmd-nicerhtml.xsl"),
+//            style: file("${configDir}/pmd-report.xslt"),
+//            style: file("${configDir}/pmd-report-per-class.xslt"),
+            out: file("${reportsOut}/index.html")
+    )
+}*/
+
+project.pmd.ignoreFailures = true
+
+check {
+//    dependsOn += ["pmd", "pmdReport"]
+//    dependsOn += ["pmd"]
+}

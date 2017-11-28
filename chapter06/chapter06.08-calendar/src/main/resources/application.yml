@@ -1,0 +1,54 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+spring:
+  ## Thymeleaf configuration:
+  thymeleaf:
+    cache: false
+    mode: HTML5
+  resources:
+    cache-period: 0
+
+  ## H2 Servlet setting
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
+
+  # Embedded Database
+  datasource:
+    url: jdbc:h2:mem:dataSource;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    continue-on-error: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+  ## LDAP
+  ldap:
+    embedded:
+#      ldif: classpath:/ldif/example.ldif
+      ldif: classpath:/ldif/calendar.ldif
+      baseDn: dc=jbcpcalendar,dc=com
+      port: ${LDAP_PORT:33389}
+#      credential:
+#        username: user
+#        password: secret
+
+
+# Turn off Security for Actuator:
+management:
+  security:
+    enabled: false
+
+
+##---------------------------------------------------------------------------##

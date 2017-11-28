@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+
+    <div th:fragment="header">
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" th:href="@{/}">myCalendar</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a id="navWelcomeLink" th:href="@{/}">Welcome</a></li>
+                        <li><a id="navEventsLink" th:href="@{/events/}">All Events</a></li>
+                        <li><a id="navMyEventsLink" th:href="@{/events/my}">My Events</a></li>
+                        <li><a id="navCreateEventLink" th:href="@{/events/form}">Create Event</a></li>
+                        <li><a id="navH2Link" target="_blank" th:href="@{/admin/h2}">H2</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                        <li><a id="navLogoutLink" th:href="@{/logout}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+
+</body>
+</html>

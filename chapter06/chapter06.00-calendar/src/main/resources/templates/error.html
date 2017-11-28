@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <title id="pageTitle">myCalendar - Error page</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <h2>Error page</h2>
+
+    <!--<h1 th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}"></h1>-->
+
+    <!--<h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>-->
+    <a href="index.html" th:href="@{/}">Back to Home Page</a>
+
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

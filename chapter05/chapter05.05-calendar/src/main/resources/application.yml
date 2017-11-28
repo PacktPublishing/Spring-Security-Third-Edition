@@ -1,0 +1,27 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+spring:
+  ## Thymeleaf configuration:
+  thymeleaf:
+    cache: false
+    mode: HTML5
+  resources:
+    cache-period: 0
+
+  # MongoDB
+  data:
+    mongodb:
+      host: localhost
+      database: dataSource
+
+# Turn off Security for Actuator:
+management:
+  security:
+    enabled: false
+
+
+##---------------------------------------------------------------------------##

@@ -1,0 +1,65 @@
+/*
+ * Chapter 12 Calendar
+ *
+ * @author Mick Knutson
+ */
+buildscript {
+	ext {}
+    repositories {
+        jcenter()
+
+        maven { url 'https://plugins.gradle.org/m2/' }
+
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/libs-milestone' }
+    }
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'org.springframework.boot'
+
+// Spring Security 4, for chapter 12
+version = '4.7.12-SNAPSHOT'
+
+dependencies {
+
+    // Spring Aspect Oriented Programming
+	compile('org.springframework.boot:spring-boot-starter-aop')
+
+    // JPA / ORM / Hibernate:
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    // H2 RDBMS
+    runtime('com.h2database:h2')
+
+    // ACL
+    compile('org.springframework.security:spring-security-acl')
+    compile('net.sf.ehcache:ehcache')
+    compile('org.springframework:spring-context-support')
+
+    // Security:
+	compile('org.springframework.boot:spring-boot-starter-security')
+    testCompile('org.springframework.security:spring-security-test')
+
+    // Web
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+
+    // Tools:
+	compile('org.springframework.boot:spring-boot-starter-logging')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	//compile('org.springframework.boot:spring-boot-actuator-docs')
+	runtime('org.springframework.boot:spring-boot-devtools')
+
+    // Testing
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    // JSON Support
+    compile ('com.fasterxml.jackson.core:jackson-core')
+    compile ('com.fasterxml.jackson.core:jackson-databind')
+
+}

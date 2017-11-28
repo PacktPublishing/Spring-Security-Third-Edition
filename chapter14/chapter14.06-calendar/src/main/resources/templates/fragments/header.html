@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<body>
+<div class="container">
+
+    <div th:fragment="header">
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" th:href="@{/}">myCalendar</a>
+                </div>
+                <div id="navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a id="navWelcomeLink" th:href="@{/}">Welcome</a></li>
+                        <li><a id="navEventsLink" th:href="@{/events/}">All Events</a></li>
+                        <li><a id="navMyEventsLink" th:href="@{/events/my}">My Events</a></li>
+                        <li><a id="navCreateEventLink" th:href="@{/events/form}">Create Event</a></li>
+                        <li><a id="navH2Link" target="_blank" th:href="@{/admin/h2}">H2</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav pull-right" sec:authorize="isAuthenticated()">
+                        <li>
+                            <p class="navbar-text">Welcome <a id="navWelcomeSessionLink" th:href="@{/user/sessions/}">
+                                <div class="navbar-text" th:text="${#authentication.name}">User</div></a>
+                            </p>
+                        </li>
+                        <li>
+                            <a id="navLogoutLink" class="btn btn-default" role="button"  th:href="@{/logout}">Logout</a>
+                        </li>
+                        <li>&nbsp;|&nbsp;</li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right" sec:authorize=" ! isAuthenticated()">
+                        <li><a id="navSignupLink" class="btn btn-default" role="button" th:href="@{/signup/form}">Signup</a></li>
+                        <li><a id="navLoginLink" class="btn btn-default" role="button" th:href="@{/login/form}">Login</a></li>
+                        <li>&nbsp;|&nbsp;</li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Standard messages -->
+        <div th:if="${#vars['message'] != null}" class="alert alert-success">
+            <span th:text="${#vars['message']}"></span>
+        </div>
+        <div th:if="${#vars['error'] != null}" class="alert alert-danger">
+            <span th:text="${#vars['error']}"></span>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

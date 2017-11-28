@@ -1,0 +1,129 @@
+version: 1
+
+dn: dc=jbcpcalendar,dc=com
+objectClass: extensibleObject
+objectClass: domain
+objectClass: top
+dc: jbcpcalendar
+
+dn: ou=Groups,dc=jbcpcalendar,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Groups
+
+dn: ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Users
+
+dn: uid=user2@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: LDAP User
+sn: User
+uid: user2@example.com
+userPassword:: dXNlcjI=
+
+dn: ou=Administrators,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalUnit
+objectClass: top
+ou: Administrators
+
+dn: uid=admin1@example.com,ou=Administrators,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: LDAP Admin
+sn: Admin
+uid: admin1@example.com
+userPassword:: YWRtaW4x
+
+dn: cn=User,ou=Groups,dc=jbcpcalendar,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: User
+uniqueMember: uid=user2@example.com,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=admin1@example.com,ou=Administrators,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=shauser@example.com,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=sshauser@example.com,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=user1@example.com,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=hasphone@example.com,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=shaperson@example.com,ou=Users,dc=jbcpcalendar,dc=com
+uniqueMember: uid=shainet@example.com,ou=Users,dc=jbcpcalendar,dc=com
+
+dn: cn=Admin,ou=Groups,dc=jbcpcalendar,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: Admin
+uniqueMember: uid=admin1@example.com,ou=Administrators,ou=Users,dc=jbcpcalendar,dc=com
+
+dn: uid=user1@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: Another LDAP User
+sn: User
+uid: user1@example.com
+userPassword:: dXNlcjE=
+
+dn: uid=shauser@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: SHA Password User
+sn: User
+uid: shauser@example.com
+userPassword:: e1NIQX0wTEtWYXAvYXAwSjBxWTVvYnJyUW9QUER2Wjg9
+
+dn: uid=sshauser@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: SSHA LDAP User
+sn: User
+uid: sshauser@example.com
+userPassword:: e1NTSEF9dGdORU9JN0FITVNQV2x5NWNBdG9xKzdjNEpNOEpqbWR3RWVvZkE9PQ==
+
+dn: uid=hasphone@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: User With Phone
+sn: Phone
+uid: hasphone@example.com
+telephoneNumber: 0123456789
+userPassword:: aGFzcGhvbmU=
+
+dn: uid=shaperson@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: top
+cn: SHA Password User
+sn: User
+uid: shaperson@example.com
+description: A SHA Password Person
+userPassword:: e1NIQX1tVC9QL255YTdHWDR6dm12NFZ5Ny9ybGxmYUk9
+
+dn: uid=shainet@example.com,ou=Users,dc=jbcpcalendar,dc=com
+objectClass: organizationalPerson
+objectClass: person
+objectClass: uidObject
+objectClass: inetOrgPerson
+objectClass: top
+cn: SHA Password User
+sn: User
+uid: shainet@example.com
+description: A SHA Password inetOrgPerson
+mail: shainet@example.com
+street: 123 JBCP Calendar Drive
+telephoneNumber: 1112223333
+userPassword:: e1NIQX1CR3Btc1oyYkhzL0VpUDV3Zmx3UWlSbFFGems9
+

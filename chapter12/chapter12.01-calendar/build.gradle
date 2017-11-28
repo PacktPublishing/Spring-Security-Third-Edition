@@ -1,0 +1,54 @@
+/*
+ * Chapter 12 Calendar
+ *
+ * @author Mick Knutson
+ */
+buildscript {
+    ext {}
+    repositories {
+//        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+
+// Spring Security 4, for chapter 12
+version = '4.12.01-SNAPSHOT'
+
+dependencies {
+
+    // JPA / ORM / Hibernate:
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    // ACL
+    compile('org.springframework.security:spring-security-acl')
+    compile('net.sf.ehcache:ehcache')
+    compile('org.springframework:spring-context-support')
+
+    // Security:
+    compile('org.springframework.boot:spring-boot-starter-security')
+
+    // Web
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+
+    // Tools:
+    compile('org.springframework.boot:spring-boot-starter-logging')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    runtime('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-configuration-processor')
+
+    // Testing
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+
+    // Required for JSR-250 based security:
+    // JSR-250 Annotations
+    //OLD: compile ('javax.annotation:jsr250-api:1.0')
+    compile ("javax.annotation:javax.annotation-api:${javaxAnnotationApiVersion}")
+
+} // The End...

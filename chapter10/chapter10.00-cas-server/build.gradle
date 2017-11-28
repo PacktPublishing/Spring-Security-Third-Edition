@@ -1,0 +1,53 @@
+import org.jose4j.jwk.JsonWebKey
+import org.jose4j.jwk.OctJwkGenerator
+
+buildscript {
+    repositories {
+        //mavenLocal()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.bitbucket.b_c:jose4j:0.5.6"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${project.'springboot.version'}"
+    }
+}
+
+subprojects {
+
+    dependencies {
+
+//        // LDAP:
+//        // Not sure if I need and/or want this starter:
+//        compile("org.springframework.boot:spring-boot-starter-data-ldap:${project.'springboot.version'}")
+//
+//        compile("org.springframework.ldap:spring-ldap-core:2.3.1.RELEASE")
+//        compile("org.springframework.security:spring-security-ldap:4.2.3.RELEASE")
+//        // Due to a artifact resolution issue with Gradle,
+//        // spring-tx must be pulled in or Gradle will fetch an older one that doesn’t work.
+//        compile("org.springframework:spring-tx")
+//        compile("com.unboundid:unboundid-ldapsdk")
+//
+//        // Security:
+//        compile("org.springframework.boot:spring-boot-starter-security")
+    }
+
+    task allDependenciesInsight(type: DependencyInsightReportTask, description: "Produce insight information for all dependencies") {}
+    task allDependencies(type: DependencyReportTask, description: "Display a graph of all project dependencies") {}
+}
+
+task wrapper(type: Wrapper, description: "Update the Gradle wrapper") {
+    gradleVersion = project."gradle.version"
+}
+
+task generateKeys {
+  group = "CAS"
+  description = 'Generate keys for CAS. These keys can be added to your cas.properties file'
+  doLast {
+    println 'Generating keys for CAS...'
+    ['cas.tgc.encryptionKey': 256, 'cas.tgc.signingKey': 512, 'cas.webflow.encryption.key': 96, 'cas.webflow.signing.key': 512].each { key, size ->
+        def octetKey = OctJwkGenerator.generateJwk(size)
+        def params = octetKey.toParams(JsonWebKey.OutputControlLevel.INCLUDE_SYMMETRIC)
+        println "${key}=${params.get('k')}"
+    }
+  }
+}

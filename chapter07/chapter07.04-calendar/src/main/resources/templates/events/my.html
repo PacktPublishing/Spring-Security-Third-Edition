@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title id="pageTitle">My Events</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <!--<div th:if="${message != null}" class="alert alert-success">
+        <span th:text="${message}"></span>
+    </div>-->
+
+    <p id="description">
+        Below you can find the events for
+        <strong th:text="${currentUser.email}"></strong>.
+        Once security is applied this will be the events for the currently logged in user.
+    </p>
+    <div id="create" class="pull-right"><a th:href="@{/events/form}">Create Event</a></div>
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+        <tr>
+            <th>Date/Time</th>
+            <th>Owner</th>
+            <th>Attendee</th>
+            <th>Summary</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${events.empty}">
+            <td colspan="4" class="msg">No events.</td>
+        </tr>
+        <tr th:each="event : ${events}">
+
+            <td th:text="${#calendars.format(event.when, 'yyyy-MM-dd HH:mm')}">today</td>
+            <td th:text="${event.owner.name}">Chuck Norris</td>
+            <td th:text="${event.attendee.name}">Mick Knutson</td>
+
+            <td><a th:href="@{'/events/{id}'(id=${event.id})}" th:text="${event.summary}">-1</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

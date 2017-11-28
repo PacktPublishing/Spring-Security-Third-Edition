@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--<Context antiJARLocking="true" path="/spring-mvc" disableURLRewriting="true">-->
+<Context path="/chapter01.00-calendar" unpackWARs="true">
+    <!--<Loader delegate="false" loaderClass="org.springframework.instrument.classloading.tomcat.TomcatInstrumentableClassLoader" />-->
+</Context>
