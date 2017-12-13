@@ -1,3 +1,0 @@
-# README #
-
-### Testing Example ###
