@@ -1,0 +1,57 @@
+/*
+ * Chapter 03.00 Calendar
+ */
+buildscript {
+	ext {
+//		springBootVersion = '2.0.0.BUILD-SNAPSHOT' // does not work.
+//		springBootVersion = '1.5.3.BUILD-SNAPSHOT'
+        springBootVersion = '1.5.2.RELEASE'
+	}
+	repositories {
+        jcenter()
+
+        maven { url 'https://plugins.gradle.org/m2/' }
+
+        maven { url 'https://repo.spring.io/libs-snapshot' }
+        maven { url 'https://repo.spring.io/snapshot' }
+        maven { url 'https://repo.spring.io/milestone' }
+        maven { url 'https://repo.spring.io/libs-milestone' }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'org.springframework.boot'
+
+// Spring Security 4, for chapter 3, version 0
+version = '4.3.0-SNAPSHOT'
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-aop')
+
+    // Database:
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile('org.springframework.boot:spring-boot-starter-data-rest')
+	
+    // Security:
+	compile('org.springframework.boot:spring-boot-starter-security')
+
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+
+    // Tools:
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-actuator-docs')
+	runtime('org.springframework.boot:spring-boot-devtools')
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+
+    //-- WebJars -->
+    compile 'org.webjars:bootstrap:3.3.7-1'
+    compile 'org.webjars:jquery:3.2.0'
+    compile 'org.webjars:webjars-locator:0.32-1'
+
+}

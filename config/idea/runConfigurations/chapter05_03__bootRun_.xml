@@ -1,0 +1,22 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="chapter05.03 (bootRun)" type="GradleRunConfiguration" factoryName="Gradle" folderName="chapter05">
+    <ExternalSystemSettings>
+      <option name="executionName" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$/chapter05/chapter05.03-calendar" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="scriptParameters" value="" />
+      <option name="taskDescriptions">
+        <list />
+      </option>
+      <option name="taskNames">
+        <list>
+          <option value="clean" />
+          <option value="bootRun" />
+        </list>
+      </option>
+      <option name="vmOptions" value="" />
+    </ExternalSystemSettings>
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <method />
+  </configuration>
+</component>

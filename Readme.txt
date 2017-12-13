@@ -1,0 +1,1 @@
+The technical requirements for code testing the book is mentioned in the Appendix.

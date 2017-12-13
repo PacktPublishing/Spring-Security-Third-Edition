@@ -1,0 +1,86 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+##---------------------------------------------------------------------------##
+spring:
+
+  ## H2 Servlet setting
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
+
+  # Embedded Database
+  datasource:
+    url: jdbc:h2:mem:dataSource;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    continue-on-error: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    # These properties are only needed to dump the JPA generated ddl to a file:
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: build/create.sql
+
+  ## Social Configuration:
+  social:
+    # facebook
+    facebook:
+      appId: 299089913898983
+      appSecret: 01639f125103752ec408affc92515d0e
+    # Google
+    google:
+      appId: 947438796602-uiob88a5kg1j9mcljfmk00quok7rphib.apps.googleusercontent.com
+      appSecret: lpYZpF2IUgNXyXdZn-zY3gpR
+    # Github
+    github:
+      appId: 71649b756d29b5a2fc84
+      appSecret: 4335dcc0131ed62d757cc63e2fdc1be09c38abbf
+    # Linked
+    linkedin:
+      appId: 866qpyhnq6f6o5
+      appSecret: KsFKoOmcGCiLfGfO
+    # Twitter
+    twitter:
+      appId: cgceheRX6a8EAE74JUeiRi8jZ
+      appSecret: XR0J2N0Inzy2y2poxzot9oSAaE6MIOs4QHSWzT8dyeZaaeawep
+
+
+##---------------------------------------------------------------------------##
+# Turn off Security for Actuator:
+management:
+  security:
+    enabled: false
+
+# BASIC Authentication:
+security.basic.enabled: false
+
+
+## Chapter 8 TLS over HTTP/1.1:
+# https://localhost:8443
+# https://127.0.0.1:8443
+server:
+  port: 8443
+  ssl:
+    key-store: "classpath:keys/jbcp_clientauth.p12"
+    key-store-password: changeit
+    keyStoreType: PKCS12
+    keyAlias: jbcpclient
+    protocol: TLS
+
+##---------------------------------------------------------------------------##

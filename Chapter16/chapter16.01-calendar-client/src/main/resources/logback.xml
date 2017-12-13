@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+https://lankydanblog.com/2017/08/31/configuring-logback-with-spring-boot/
+-->
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!--<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>-->
+
+    <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
+        <token>UvkDCXgJkUxPujtVgMQpohXRXsQDnjNs</token>
+        <logzioUrl>https://listener.logz.io:8071</logzioUrl>
+        <logzioType>jbcpcalendar-client</logzioType>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <root level="info">
+        <!-- IMPORTANT: make sure to include this line, otherwise the appender won't be used -->
+        <appender-ref ref="LogzioLogbackAppender"/>
+    </root>
+
+</configuration>

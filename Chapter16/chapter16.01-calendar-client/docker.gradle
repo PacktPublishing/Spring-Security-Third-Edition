@@ -1,0 +1,170 @@
+/**
+ * https://github.com/bmuschko/gradle-docker-plugin
+ */
+
+// import task classes
+import com.bmuschko.gradle.docker.tasks.image.*
+import com.bmuschko.gradle.docker.tasks.container.*
+
+apply plugin: "application"
+
+apply plugin: com.bmuschko.gradle.docker.DockerRemoteApiPlugin
+apply plugin: com.bmuschko.gradle.docker.DockerJavaApplicationPlugin
+
+def fromImage = "openjdk:8-jre-alpine"
+def maintainerEmail = "Mick Knutson <mknutson@baselogic.io>"
+def exposePorts = [8888]
+def exposeBindings = ['8888:8888']
+def imageTag = "mickknutson/jbcpcalendar-client:latest"
+def containerTag = "jbcpcalendar-client"
+def projectTag = "FOOBAR"
+def jarTag = "jbcpcalendar-client"
+
+buildscript {
+    ext{}
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:gradle-processes:latest.release'
+        classpath( 'com.bmuschko:gradle-docker-plugin:latest.release' )
+    }
+}
+
+/**
+ * Docker Configuration
+ *
+ * https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes#removing-containers
+ *
+ * gradle clean dockerBuildImage -Pfast
+ *
+ * To verify the Docker image:
+ * docker images
+ *
+ * docker run --name jbcpcalendar-client -p 8888:8888 -t mickknutson/jbcpcalendar-client
+ * docker run --name jbcpcalendar-client -p 8888:8888 -t mickknutson/jbcpcalendar-client:4.16
+ *
+ * --> Remove Container
+ * docker stop $(docker ps -a -q)
+ * docker rm $(docker ps -a -q)
+ * or:
+ * docker rm /jbcpcalendar-client
+ *
+ * --> Remove Image
+ * docker rmi $(docker images -a -q)
+ * or:
+ * docker rmi mickknutson/jbcpcalendar-client
+ *
+ * --> To push:
+ * docker push mickknutson/jbcpcalendar-client:latest
+ *
+ */
+/*
+docker run \
+  --name="jbcpcalendar-client" \
+  -p 8888:8888 \
+  --network="bridge" \
+  --detach \
+  -e "OAUTH_URL=http://$(ifconfig en0 | awk '/ *inet /{print $2}'):8080" \
+  -t mickknutson/jbcpcalendar-client:latest && \
+docker logs jbcpcalendar-client --tail="0" --follow
+
+  -e "http://$(ifconfig en0 | awk '/ *inet /{print $2}'):8080" \
+*/
+
+dockerDistTar {
+
+    projectTag = (project.path).substring((project.path).lastIndexOf(':')+1)
+
+    environmentVariable ('projectTag', "${projectTag}")
+    instruction {"ADD app-lib/${jarTag}-${version}.jar /${jarTag}.jar"}
+//    instruction {"RUN mv ${projectTag}/bin/${projectTag} ${projectTag}/bin/${projectTag}.sh"}
+    instruction {"RUN rm -rf ${projectTag}"}
+
+//    instruction {'RUN ls -la ./chapter*/bin/'}
+    instruction {"RUN sh -c 'touch ./${jarTag}.jar'"}
+    instruction {'RUN ls -la'}
+
+//    instruction {"ENTRYPOINT ./${projectTag}/bin/${projectTag}.sh"}
+    instruction {"ENTRYPOINT java -Djava.security.egd=file:/dev/./urandom -jar ./${jarTag}.jar"}
+    environmentVariable ('JAVA_OPTS', '-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap')
+    environmentVariable ('OAUTH_URL_TEST', "\"http://MUST GET ACTUAL IP:8080\"")
+    environmentVariable ('OAUTH_URL', "\"http://\$(ifconfig en0 | awk '/ *inet /{print \$2}'):8080\"")
+
+}
+
+docker {
+//    url = 'https://192.168.59.103:2376'
+//    certPath = new File(System.properties['user.home'], '.boot2docker/certs/boot2docker-vm')
+
+    registryCredentials {
+        url = 'https://index.docker.io/v1/'
+        username = 'mickknutson'
+        password = 'pwd'
+        email = 'mickknutson@gmail.com'
+    }
+
+    javaApplication {
+        baseImage fromImage
+        maintainer = maintainerEmail
+        ports = exposePorts
+        tag = imageTag
+
+        exec {
+            defaultCommand "server"
+//            entryPoint "java -Djava.security.egd=file:/dev/./urandom -jar ./${jarTag}.jar"
+        }
+    }
+}
+
+/**
+ * gradle startContainer -Pfast -s
+ */
+task createContainer(type: DockerCreateContainer) {
+
+    dependsOn dockerBuildImage
+    targetImageId { dockerBuildImage.getImageId() }
+    portBindings = exposeBindings
+}
+
+task startContainer(type: DockerStartContainer) {
+    dependsOn createContainer
+    targetContainerId { createContainer.getContainerId() }
+//    containerName = containerTag
+//    onError { exception ->
+//        if (!exception.message.contains('No such container')){ // ignore exception if container does not exist otherwise throw it
+//            throw exception
+//        } else {
+//            removeContainer.targetContainerId { createContainer.getContainerId() }
+//        }
+//    }
+}
+
+task stopContainer(type: DockerStopContainer) {
+    targetContainerId { createContainer.getContainerId() }
+}
+
+
+task removeContainer(type: DockerRemoveContainer) {
+    dependsOn stopContainer
+    targetContainerId { createContainer.getContainerId() }
+}
+
+task removeImage(type: DockerRemoveImage) {
+//    dependsOn removeContainer
+    targetImageId { "mickknutson/jbcpcalendar-client" }
+}
+
+/**
+ * gradle pushImage -Pfast -s
+ */
+
+task pushImage(type: DockerPushImage) {
+    dependsOn dockerBuildImage
+    imageName "mickknutson/jbcpcalendar-client"
+
+    tag "latest"
+}
+
+
+dockerBuildImage.dependsOn bootRepackage

@@ -1,0 +1,39 @@
+/**
+ * JavaDoc Configuration
+ */
+
+task androidJavadocs(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    title = "Library SDK"
+    classpath = files(project.android.getBootClasspath())
+    destinationDir = file("${buildDir}/reports/javadoc/analytics-sdk/")
+
+    options {
+        links "http://docs.oracle.com/javase/8/docs/api/"
+        linksOffline "http://d.android.com/reference","${android.sdkDirectory}/docs/reference"
+    }
+    exclude '**/BuildConfig.java'
+    exclude '**/R.java'
+}
+
+afterEvaluate {
+    // fixes issue where javadoc can't find android symbols ref: http://stackoverflow.com/a/34572606
+    androidJavadocs.classpath += files(android.libraryVariants.collect { variant ->
+        variant.javaCompile.classpath.files
+    })
+}
+
+
+
+task javadoc(type: Javadoc,
+        group: 'Documentation',
+        description: 'Generates Javadoc API documentation for the main source code.') {
+
+    destinationDir = project.file("${project.buildDir}/site/apidocs")
+
+    def javadocProjects = publishedJavaProjects;
+    javadocProjects.each { source it.sourceSets.main.java.srcDirs }
+    classpath = javadocProjects.inject(project.files()) { result, project ->
+        result.from(project.sourceSets.main.runtimeClasspath)
+    }
+}

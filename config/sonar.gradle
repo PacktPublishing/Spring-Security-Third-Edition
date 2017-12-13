@@ -1,0 +1,54 @@
+/**
+ * Sonar Configuration
+ *
+ * https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Gradle
+ *
+ * apply from: "${rootDir}/config/sonar.gradle"
+ *
+ * This will run Sonar, then publish build results:
+ * ./gradlew sonarqube -Dscan
+ *
+ */
+/*buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+//        classpath ("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}")
+//        classpath ("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarqubeGradlePluginVersion}")
+
+    }
+}*/
+
+//apply plugin: "org.sonarqube"
+apply plugin: "org.sonarqube"
+
+def configDir = "${project.rootDir}/config"
+def reportOut = "${project.buildDir}/reports/sonar"
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Multi-module JBCP Calendar Project with sources in root"
+        property "sonar.projectKey", "com.packtpub.springsecurity:jbcpcalendar"
+    }
+}
+
+// project("chapter01:chapter01.00-calendar") {sonarqube {skipProject = true}}
+
+/*
+include 'chapter02:chapter02.00-calendar'
+include 'chapter02:chapter02.01-calendar'
+include 'chapter02:chapter02.02-calendar'
+include 'chapter02:chapter02.03-calendar'
+include 'chapter02:chapter02.04-calendar'
+include 'chapter02:chapter02.05-calendar'
+include 'chapter02:chapter02.06-calendar'
+
+ */
+
+// This dependency is already set:
+//sonar {
+//    dependsOn += ["check"]
+//}

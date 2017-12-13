@@ -1,0 +1,19 @@
+/**
+ * Sonar Configuration
+ *
+ * https://github.com/Argelbargel/sonarqube-multiproject-gradle-plugin
+ * sonarqube-multiproject.gradle
+ *
+ */
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("gradle.plugin.argelbargel.gradle.plugins:sonarqube-multiproject-plugin:latest.release")
+    }
+}
+
+apply plugin: Class.forName('argelbargel.gradle.plugins.sonarqube.SonarqubeMultiProjectPlugin')

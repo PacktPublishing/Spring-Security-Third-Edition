@@ -1,0 +1,99 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+spring:
+  profiles:
+    active: default
+
+#  resource:
+#    chain:
+#      enabled: true
+
+  ##---------------------------------------------------------------------------##
+  ## H2 Servlet setting
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
+
+  # Embedded Database
+  datasource:
+    url: jdbc:h2:mem:dataSource;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    continue-on-error: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    # These properties are only needed to dump the JPA generated ddl to a file:
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: build/create.sql
+
+
+##---------------------------------------------------------------------------##
+# OAuth2 Client Configuration:
+
+oauth:
+  url: ${OAUTH_URL:http://localhost:8080}
+  token:
+    uri: ${OAUTH_URL:http://localhost:8080}/oauth/token
+
+  resource:
+    id: microservice-test
+    # Client BASIC Authentication for Authentication Server
+    client:
+      id: ${OAUTH_CLIENT_ID:oauthClient1}
+      secret: ${OAUTH_CLIENT_SECRET:oauthClient1Password}
+
+    # Resource Password Credentials
+    user:
+      id: ${OAUTH_USER_ID:user1@example.com}
+      password: ${OAUTH_USER_PASSWORD:user1}
+
+
+##---------------------------------------------------------------------------##
+# Running on port 8888 as to not conflict with port 8080
+server:
+  port: 8888
+
+# Turn off Security for Actuator:
+management:
+  security:
+    enabled: false
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: ${OAUTH_CLIENT_ID:oauthClient1}
+    password: ${OAUTH_CLIENT_SECRET:oauthClient1Password}
+
+
+
+##---------------------------------------------------------------------------##
+## TCP-MON PROXY Profile Properties
+
+---
+
+spring:
+  profiles: PROXY
+
+server:
+  port: 9999
+
+
+##---------------------------------------------------------------------------##

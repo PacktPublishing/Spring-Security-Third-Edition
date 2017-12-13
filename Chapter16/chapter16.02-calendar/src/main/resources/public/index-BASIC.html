@@ -1,0 +1,62 @@
+<!--
+To access from this application:
+http://localhost:8080/index.html
+
+OLD:
+http://localhost:8080/index-BASIC.html
+
+http://user1:changeme@localhost:9999/api
+
+-->
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js"></script>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+    <script type="application/javascript">
+        $(document).ready(function(){
+            $.ajax({
+                url: "http://localhost:8080/api",
+                type : "GET",
+                crossDomain:true,
+                crossOrigin:true,
+
+                // Add BASIC Authentication headers:
+                beforeSend: function (xhr) {
+                    // Use BASIC Authentication
+                    xhr.setRequestHeader ("Authorization", "Basic " + btoa("user1:changeme"));
+                    xhr.setRequestHeader ("Access-Control-Request-Method", "OPTIONS");
+                },
+                error: function(xhr, status, errorThrown) {
+                    alert(status, errorThrown);
+                    // Error block
+                    console.log("xhr: " + xhr);
+                    console.log("status: " + status);
+                    console.log("errorThrown: " + errorThrown);
+                }
+            })
+            .then(function(data, status, xhr) {
+                //alert(data);
+                console.log("xhr: " + xhr);
+                console.log("status: " + status);
+                console.log("data: "+ data);
+
+                $('.message').append(data);
+
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Spring Boot Ajax Test (no BASIC Authentication)</h1>
+    <div id = 'bootFeed'>
+        <p class="message"><b>Application Message Returned:</b> </p>
+    </div>
+
+    <h2><a href="index.html">Spring Boot Ajax Test (without BASIC Authentication) example</a></h2>
+</body>
+</html>

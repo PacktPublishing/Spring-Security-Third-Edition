@@ -1,0 +1,128 @@
+##---------------------------------------------------------------------------##
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+# https://circleci.com/docs/2.0/configuration-reference/
+#
+# TO Revisit:
+# https://github.com/AnySoftKeyboard/AnySoftKeyboard/blob/master/circle.yml
+##---------------------------------------------------------------------------##
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk-browsers
+#        environment:
+#          _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+#          TEST_REPORTS: /tmp/test-reports
+#          BASE_DIR: "./"
+          # Turn off Gradle Daemon
+#          GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon="false" -Dorg.gradle.parallel="false" -Dorg.gradle.configureondemand="false"'
+
+    environment:
+      _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
+      BASE_DIR: "./"
+      # Turn off Gradle Daemon
+#      GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError" -Dorg.gradle.daemon="false" -Dorg.gradle.parallel="false" -Dorg.gradle.configureondemand="false"'
+
+    parallelism: 3
+#    resource_class: large
+    working_directory: ~/tmp/workspace
+
+##---------------------------------------------------------------------------##
+## Gradle Steps
+##---------------------------------------------------------------------------##
+    steps:
+
+      - checkout
+
+      - run:
+          name: Initialize
+          command: |
+            set -xu
+            echo $CIRCLE_WORKING_DIRECTORY
+            mkdir -p ~/junit/
+            pwd
+            ls -la
+            ls -la ${BASE_DIR}
+            find . -maxdepth 2 -exec du -ms {} \; | sort -rn | head -n 15
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "build.gradle" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: Downloading Dependencies
+          command: ./gradlew dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      # run test, check, coverage reports and be quick about it!!!
+      - run:
+          name: run test, check, coverage reports and be quick about it!!! (but scan build)
+          command: ./gradlew check -Pfast -Dscan
+
+#      # run check and coverage reports only
+#      - run: ./gradlew check -Pfast
+
+      - run:
+          name: Saving test results
+          command: |
+            set -xu
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/test/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+
+      - run:
+          name: Saving Coverage results
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/reports/jacoco/.*xml" -exec cp {} ~/junit/ \;
+            bash <(curl -s https://codecov.io/bash)
+
+      - run:
+          name: listing after saving test results
+          command: |
+            set -xu
+            ls -la ~/junit
+
+      - store_test_results:
+          name: Storing test results
+          path: ~/junit
+
+      - run:
+          name: listing after Storing test results
+          command: |
+            set -xu
+            ls -la ~/junit
+
+      - store_artifacts:
+          name: Storing Artifacts
+          path: ~/junit
+
+      # Publish build result to Gradle Build Scan
+      - run:
+          name: Publish build result to Gradle Build Scan
+          command: ./gradlew bSPP
+
+
+#  test:
+#    post:
+#      - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+#      - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+
+#    test:
+#      post:
+#        - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+#        - find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
+#        - bash <(curl -s https://codecov.io/bash)
+
+
+## The End... ##
+##---------------------------------------------------------------------------##

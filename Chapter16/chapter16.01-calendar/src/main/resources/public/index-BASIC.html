@@ -1,0 +1,91 @@
+<!--
+To access from this application:
+http://localhost:8080/index.html
+
+OLD:
+http://localhost:8080/index-BASIC.html
+
+http://user1:changeme@localhost:9999/api
+
+-->
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+    <script type="application/javascript">
+        $(document).ready(function(){
+
+            var form = new FormData();
+            form.append("grant_type", "password");
+            form.append("username", "user1@example.com");
+            form.append("password", "user1");
+
+            $.ajax({
+                url: "http://localhost:8080/oauth/token",
+                type : "POST",
+                crossDomain:true,
+                crossOrigin:true,
+                formData: form,
+
+                // Add BASIC Authentication headers:
+                beforeSend: function (xhr) {
+                    // Use BASIC Authentication
+                    xhr.setRequestHeader ("Authorization", "Basic " + btoa("oauthClient1:oauthClient1Password"));
+                    xhr.setRequestHeader ("Access-Control-Request-Method", "OPTIONS");
+                },
+                // Handle Errors
+                error: function(xhr, status, errorThrown) {
+                    // alert(status, errorThrown);
+                    // Error block
+                    console.log("xhr: " + xhr);
+                    console.log("status: " + status);
+                    console.log("errorThrown: " + errorThrown);
+
+                    $('.result').append(
+                        '<div class="alert alert-danger">'+
+                        '<strong>Failure! </strong> status: ' + status
+                        +', errorThrown: ' + errorThrown
+                        // +', xhr: ' + xhr
+                        +'</div>'
+                    );
+                }
+            })
+                // Handle Success Response
+            .then(function(data, status, xhr) {
+                //alert(data);
+                console.log("xhr: " + xhr);
+                console.log("status: " + status);
+                console.log("data: "+ data);
+
+                $('.message').append(
+                    "<div class=\"alert alert-success\">" + data + "</div>");
+
+                $('.name').append(data.name);
+            });
+        });
+        /**
+         * curl oauthClient1:oauthClient1Password@localhost:8080/oauth/token -d "grant_type=password&username=user1@example.com&password=user1"
+         * Add more functions to handle:
+         * 1. get auth_token
+        */
+    </script>
+</head>
+<body>
+    <h1>Spring Boot Ajax Test (w/ BASIC Authentication)</h1>
+    <div id = 'bootFeed'>
+        <p class="name">Application Message Returned: </p>
+        <p class="result"></p>
+    </div>
+
+    <h2><a href="index.html">Spring Boot Ajax Test (without BASIC Authentication) example</a></h2>
+</body>
+</html>

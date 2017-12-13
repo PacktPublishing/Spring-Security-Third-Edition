@@ -1,0 +1,14 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/test/resources/test.yml
+#------------------------------------------------------------------------------#
+
+oauth.resource: http://localhost:8080
+oauth.token: http://localhost:8080/oauth/token
+
+oauth.resource.id: microservice-test
+oauth.resource.client.id: oauthClient1
+oauth.resource.client.secret: oauthClient1Password
+
+##---------------------------------------------------------------------------##
+

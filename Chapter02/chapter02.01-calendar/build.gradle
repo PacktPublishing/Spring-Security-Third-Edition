@@ -1,0 +1,133 @@
+/*
+ * Chapter 2 Calendar
+ *
+ * @author Mick Knutson
+ */
+buildscript {
+    ext {}
+    repositories {
+//        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "io.spring.gradle:dependency-management-plugin:${dependencyManagementPluginVersion}"
+        classpath "com.bmuschko:gradle-tomcat-plugin:${bmuschkoGradleTomcatPluginVersion}"
+    }
+}
+
+apply plugin: "io.spring.dependency-management"
+apply plugin: "war"
+apply plugin: "com.bmuschko.tomcat"
+apply plugin: "com.bmuschko.tomcat-base"
+
+// Spring Security 4, for chapter 2, version 0
+version = "4.2.1-SNAPSHOT"
+
+dependencyManagement {
+    imports {
+        mavenBom ("io.spring.platform:platform-bom:${springIoVersion}")
+    }
+}
+
+dependencies {
+    // Misc from Spring IO
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-devtools"
+
+    // Spring Dependencies:
+    compile "org.springframework:spring-aop"
+    compile "org.springframework:spring-beans"
+    compile "org.springframework:spring-context"
+    compile "org.springframework:spring-context-support"
+    compile "org.springframework:spring-core"
+    compile "org.springframework:spring-expression"
+    compile "org.springframework:spring-jdbc"
+    compile "org.springframework:spring-tx"
+    compile "org.springframework:spring-web"
+    compile "org.springframework:spring-webmvc"
+    compile "org.springframework:spring-test"
+
+    // Spring Security Dependencies
+    compile "org.springframework.security:spring-security-config"
+    compile "org.springframework.security:spring-security-core"
+    compile "org.springframework.security:spring-security-web"
+
+    compile "javax.servlet:jstl"
+    providedCompile "javax.servlet:javax.servlet-api"
+    providedCompile "javax.servlet.jsp:javax.servlet.jsp-api"
+
+    // Logging
+    compile "org.slf4j:slf4j-api"
+
+    compile "org.codehaus.jackson:jackson-core-asl"
+    compile "org.codehaus.jackson:jackson-mapper-asl"
+    compile "com.fasterxml.jackson.core:jackson-annotations"
+    compile "com.fasterxml.jackson.core:jackson-core"
+    compile "com.fasterxml.jackson.core:jackson-databind"
+
+    compile "javax.validation:validation-api"
+    compile "org.hibernate:hibernate-validator"
+    compile "org.hibernate:hibernate-validator-annotation-processor"
+
+    // Thymeleaf Spring
+    compile "org.thymeleaf:thymeleaf"
+    compile "org.thymeleaf:thymeleaf-spring4"
+
+    // Joda time. TO be replaced with Java 8 Time
+    compile "joda-time:joda-time"
+
+    // Testing:
+    testCompile "junit:junit"
+    testCompile "org.hamcrest:hamcrest-all"
+    testCompile "org.hamcrest:hamcrest-core"
+    testCompile "org.assertj:assertj-core"
+
+    // Selenium / WebDriver
+    testCompile "org.seleniumhq.selenium:selenium-api"
+    testCompile "org.seleniumhq.selenium:selenium-chrome-driver"
+    testCompile "org.seleniumhq.selenium:selenium-firefox-driver"
+    testCompile "org.seleniumhq.selenium:selenium-java"
+    testCompile "org.seleniumhq.selenium:selenium-support"
+
+    // Gradle Tomcat plugin
+    def tomcatVersion = "8.0.42"
+    // FIXME: These versions are not found:
+//    def tomcatVersion = "8.5.2"
+//    def tomcatVersion = "9.0.0.M6"
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+}
+
+//---------------------------------------------------------------------------//
+task explodedWar(type: Copy) {
+    into "$buildDir/exploded"
+    with war
+}
+
+war {
+    baseName = "calendar"
+    archiveName = "${baseName}.war"
+}
+
+war.doLast {
+    explodedWar.execute()
+}
+
+war.dependsOn explodedWar
+
+tomcat {
+    httpPort = 8080
+    httpsPort = 8081
+    enableSSL = true
+
+    contextPath = "/"
+
+    users {
+        user {
+            username = "admin"
+            password = "admin"
+            roles = ["developers", "admin"]
+        }
+    }
+}

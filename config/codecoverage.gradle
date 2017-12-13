@@ -1,0 +1,71 @@
+/**
+ * Code Coverage Configuration
+ *
+ * JacocoReport:
+ * https://docs.gradle.org/current/userguide/jacoco_plugin.html
+ * https://github.com/codecov/example-gradle
+ */
+/*
+To run:
+
+Can be run on the whole project:
+gradle check
+
+Can be run on individual subprojects:
+gradle jacocoTestReport
+*/
+
+def configDir = "${project.rootDir}/config/jacoco"
+def reportsOut = "${project.buildDir}/reports/jacoco"
+
+
+apply plugin: 'jacoco'
+
+jacoco {
+    toolVersion = "${jacocoVersion}"
+    reportsDir = file("${reportsOut}")
+}
+
+/**
+ * Can be run on individual subprojects:
+ * gradle jacocoTestReport
+ */
+/*jacocoTestReport {
+
+    xmlReport = true
+    htmlReport = false
+
+    if (!ext.has("htmlCoverage")) {
+        xmlReport = false
+        htmlReport = true
+    }
+
+    reports {
+        xml {
+            enabled = xmlReport
+            setDestination(file("${project.buildDir}/reports/jacoco/report.xml"))
+        }
+        html {
+            enabled = htmlReport
+            setDestination(file("${project.buildDir}/reports/jacoco/"))
+        }
+    }
+}*/
+
+jacocoTestReport {
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+check.dependsOn jacocoTestReport
+//jacocoTestReport.dependsOn test
+
+//apply plugin: "com.github.kt3k.coveralls"
+
+/*coveralls {
+//    sourceDirs = sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath = "${reportsOut}/report.xml"
+}*/

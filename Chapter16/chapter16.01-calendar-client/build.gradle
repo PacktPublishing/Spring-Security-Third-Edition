@@ -1,0 +1,172 @@
+/*
+ * Chapter 16 Calendar
+ *
+ * @author Mick Knutson
+ */
+buildscript {
+    ext {}
+    repositories {
+        //mavenLocal()
+//        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: "org.springframework.boot"
+
+apply from: 'docker.gradle'
+
+
+// Spring Security 4, for chapter 16
+version = "4.16.01-SNAPSHOT"
+
+mainClassName = "com.packtpub.springsecurity.CalendarClientApplication"
+
+dependencies {
+
+    // JPA / ORM / Hibernate:
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // Security:
+//	compile("org.springframework.boot:spring-boot-starter-security")
+
+    // Spring Security OAuth2:
+    compile ("org.springframework.security.oauth:spring-security-oauth2")
+
+    // Needed to skip SSL Hostname Verification
+    compile ("org.apache.httpcomponents:httpclient")
+
+    // Spring Security JWT
+    compile ("org.springframework.security:spring-security-jwt")
+
+
+    // Web
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    // Tools:
+    compile("org.springframework.boot:spring-boot-starter-logging")
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    runtime("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Testing
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile("org.springframework.security:spring-security-test")
+
+    // Required for JSR-250 based security:
+    compile ("javax.annotation:javax.annotation-api:${javaxAnnotationApiVersion}")
+
+} // end dependencies
+
+
+jar {
+    baseName = "${rootProject.name}-client"
+    version =  "${project.version}"
+    manifest {
+        attributes(
+                'Main-Class': 'com.packtpub.springsecurity.CalendarClientApplication'
+        )
+    }
+}
+
+
+/**
+ * Spring Boot Information
+ *
+ * https://docs.spring.io/spring-boot/docs/1.5.8.RELEASE/reference/pdf/spring-boot-reference.pdf
+ *
+ * buildInfo() will expose this endpoint:
+ *
+ * http -b localhost:8080/info
+ * curl -b localhost:8080/info
+ */
+springBoot  {
+    buildInfo()
+    mainClassName = "com.packtpub.springsecurity.CalendarClientApplication"
+}
+
+/**
+ * gradle bootRepackage -s
+ */
+//bootRepackage  {
+//    withJarTask = tasks["execJar"]
+//}
+
+/**
+ * To remote debug:
+ * gradle bootRun --debug-jvm
+ *
+ */
+//bootRun {
+//    enableAssertions = true
+//    jvmArgs "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+//}
+
+
+
+
+/**
+ * Docker Configuration
+ * https://github.com/Transmode/gradle-docker
+ *
+ * https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes#removing-containers
+ *
+ * gradle clean buildDocker --refresh-dependencies -Pfast
+ *
+ * To verify the Docker image:
+ * docker images
+ *
+ * docker run --name jbcpcalendar-client -p 8888:8888 -t com.packtpub.springsecurity/jbcpcalendar-client
+ * docker run --name jbcpcalendar-client -p 8888:8888 -t com.packtpub.springsecurity/jbcpcalendar-client:4.16
+ *
+ * --> Remove Container
+ * docker stop $(docker ps -a -q)
+ * docker rm $(docker ps -a -q)
+ * or:
+ * docker rm /jbcpcalendar-client
+ *
+ * --> Remove Image
+ * docker rmi $(docker images -a -q)
+ * or:
+ * docker rmi com.packtpub.springsecurity/jbcpcalendar-client
+ *
+ * --> To push:
+ * docker push mickknutson/jbcpcalendar-client:latest
+ *
+ */
+/*task buildDocker(type: Docker, dependsOn: build) {
+
+    baseImage "openjdk:8-jre-alpine"
+
+    applicationName = jar.baseName += "-client"
+    push = project.hasProperty("push")
+
+    tag "mickknutson/${applicationName}"
+    tagVersion "latest"
+
+    volume "/tmp"
+    workingDir "/apps"
+
+    addFile {
+        from jar
+        rename {"jbcpcalendar-client.jar"}
+    }
+
+    runCommand("sh -c 'touch /jbcpcalendar-client.jar'")
+//    runCommand("sh -c 'ping http://127.0.0.1:8080'")
+    // addInstruction(String cmd, String value)
+//    entryPoint(["java", "-jar", "/jbcpcalendar-client.jar"])
+//    entryPoint([ "sh", "-c", "java \$JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /jbcpcalendar-client.jar" ])
+    entryPoint(["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/jbcpcalendar-client.jar"])
+    exposePort(8888)
+
+    dockerfile = file("Dockerfile")
+}*/
+
+//---------------------------------------------------------------------------//
+// The End...
+//---------------------------------------------------------------------------//

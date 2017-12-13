@@ -1,0 +1,85 @@
+/**
+ * JXR Configuration
+ *
+ */
+
+// https://github.com/davidecavestro/gradle-jxr-plugin
+// https://github.com/mattbertolini/JXR-Ant#gradle
+//    id "net.davidecavestro.gradle.jxr" version "0.2.1"
+//    check.dependsOn jxr
+
+//    plugins.withType(JavaBasePlugin) { // <- just if 'JavaBasePlugin' plugin is not applied to all subprojects
+//        check.dependsOn(rootProject.cpdCheck)
+//    }
+
+
+import net.davidecavestro.gradle.jxr.JxrLog
+import org.apache.maven.jxr.JXR
+
+import java.util.stream.Collectors
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+
+    dependencies {
+        classpath 'kr.motd.gradle:sphinx-gradle-plugin:1.0.5'
+        classpath 'gradle.plugin.net.davidecavestro:gradle-jxr-plugin:latest.release'
+    }
+}
+
+apply plugin: 'net.davidecavestro.gradle.jxr'
+
+def configDir = "${project.rootDir}/config"
+def reportsOut = "${project.buildDir}/reports/jxr"
+
+
+/**
+ * https://github.com/davidecavestro/gradle-jxr-plugin
+ * https://github.com/mattbertolini/JXR-Ant#gradle
+ *
+ * to run:
+ * gradle jxr
+ */
+//    id "net.davidecavestro.gradle.jxr" version "0.2.1"
+
+//    plugins.withType(JavaBasePlugin) { // <- just if 'JavaBasePlugin' plugin is not applied to all subprojects
+//        check.dependsOn(rootProject.cpdCheck)
+//    }
+
+
+task xref(group: 'Documentation',
+        description: 'Generates the source cross-reference.') {
+
+    def outputDir = "${project.buildDir}/site/xref"
+    def sourceDirs = publishedJavaProjects.inject([]) { srcDirs, project ->
+        project.sourceSets.main.java.srcDirs.each {
+            if (it.exists()) {
+                srcDirs << it.path
+            }
+        }
+        return srcDirs
+    }
+
+    inputs.dir sourceDirs
+    outputs.dir outputDir
+
+    doLast {
+        JXR jxr = new JXR()
+        jxr.dest = outputDir
+        jxr.inputEncoding = 'UTF-8'
+        jxr.outputEncoding = 'UTF-8'
+        jxr.log = new JxrLog(logger: logger)
+
+        def title = "Central Dogma ${project.version} cross-reference"
+        jxr.xref(sourceDirs, 'templates', title, title, rootProject.ext.copyrightFooter)
+        ant.copy(file: "${project.projectDir}/src/xref/stylesheet.css", todir: jxr.dest)
+    }
+}
+
+
+project.jxr.ignoreFailures = true
+
+check.dependsOn jxr

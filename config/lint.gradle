@@ -1,0 +1,37 @@
+/**
+ * GradleLint Configuration
+ *
+ */
+apply plugin: 'nebula.lint'
+
+def configDir = "${project.rootDir}/config"
+def reportOut = "${project.buildDir}/reports/lint"
+
+
+/**
+ * https://github.com/nebula-plugins/gradle-lint-plugin
+ *
+ * to run:
+ * gradle autoLintGradle
+ * gradle lintGradle
+ * gradle generateGradleLintReport
+ *
+ * To auto fix:
+ * gradle fixGradleLint
+ */
+gradleLint.rules =
+        ['all-dependency',
+         'duplicate-dependency-class',
+         'all-nebula-renames'
+        ]
+gradleLint.reportFormat = 'xml' // or 'xml' or 'text' or the default of 'html'
+gradleLint.alwaysRun = false
+//gradleLint.autoLintAfterFailure = false
+
+//check.dependsOn generateGradleLintReport
+//generateGradleLintReport.shouldRunAfter check
+
+
+//check {
+//    dependsOn += ["lintGradle"]
+//}

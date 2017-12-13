@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <title id="pageTitle">myCalendar - Please Login</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <form th:action="@{/login}" method="POST" class="form-horizontal">
+
+        <div th:if="${param.error != null}" class="alert alert-danger">
+            <strong>Failed to login.</strong>
+
+            <span th:if="${session[SPRING_SECURITY_LAST_EXCEPTION] != null}">
+                <span th:text="${session[SPRING_SECURITY_LAST_EXCEPTION].message}">Invalid credentials</span>
+            </span>
+        </div>
+        <div th:if="${param.logout != null}" class="alert alert-success">
+            You have been logged out.
+        </div>
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" autofocus="autofocus"/>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password"/>
+        <label for="remember-me">Remember Me?</label>
+        <input type="checkbox" id="remember-me" name="obscure-remember-me" th:checked="true" />
+
+        <div class="control-group">
+            <div class="controls">
+                <input id="submit" type="submit" name="submit" value="Login"/>
+            </div>
+        </div>
+    </form>
+
+    <br />
+    <h3>Social Login</h3>
+    <br />
+    <form th:action="@{/signin/twitter}" method="POST" class="form-horizontal">
+        <input type="hidden" name="scope" value="public_profile" />
+        <div class="form-actions">
+            <input id="twitter-submit" class="btn" type="submit" value="Login using Twitter"/>
+        </div>
+    </form>
+    <br />
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

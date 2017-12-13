@@ -1,0 +1,67 @@
+/**
+ * CheckStyle Configuration
+ *
+ * https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+ * to run:
+ * gradle checkAllSource
+ */
+apply plugin: "checkstyle"
+
+def configDir = "${project.rootDir}/config/codestyle"
+def reportOut = "${project.buildDir}/reports/checkstyle"
+
+checkstyle {
+//    toolVersion = "8.2"
+    sourceSets = [sourceSets.main]
+    configFile file("${configDir}/codestyle.xml")
+    configProperties = ["checkstyle.java.header": file("${configDir}/java.header").getAbsolutePath()]
+    reportsDir = file("${reportOut}")
+}
+
+task checkAllSource(type: Checkstyle) {
+    source = fileTree("${project.projectDir}/src/main/java/")
+    include "**/*.java"
+    classpath = project.configurations.compile
+
+    reports {
+        xml{
+            enabled = true
+            destination = file("${reportOut}/checkstyle.xml")
+        }
+        html{
+            enabled = true
+            destination = file("${reportOut}/checkstyle.html")
+            stylesheet = resources.text.fromFile("${configDir}/checkstyle-frames.xsl")
+        }
+    }
+}
+
+task failOnCheckstyleWarning {
+    def checkstyleWarningsFile = "${reportOut}/checkstyle.xml"
+    def intro = "There were checkstyle warnings. For more details check: "
+    def line = "------------------------------------------------------------------------------------------------"
+}
+
+/*tasks.withType(Checkstyle) {
+    reports {
+        xml{
+            enabled = true
+            destination = file("${reportOut}/checkstyle.xml")
+        }
+        html{
+            enabled = true
+            destination = file("${reportOut}/checkstyle.html")
+            stylesheet = resources.text.fromFile("${configDir}/checkstyle-frames.xsl")
+        }
+    }
+}*/
+
+project.checkstyle.ignoreFailures = true
+
+// ensure that there are no style warnings
+checkAllSource.dependsOn checkstyle
+
+failOnCheckstyleWarning.dependsOn checkAllSource
+
+// run checkstyle as part of the standard set of checks
+//check.dependsOn failOnCheckstyleWarning

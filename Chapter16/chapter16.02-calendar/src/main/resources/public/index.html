@@ -1,0 +1,73 @@
+<!--
+To access from this application:
+http://localhost:8080/index.html
+
+http://user1:changeme@localhost:9999/api
+
+-->
+<html>
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js"></script>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+    </style>
+
+    <script type="text/javascript">
+
+    var form = new FormData();
+    form.append("grant_type", "password");
+    form.append("username", "user1@example.com");
+    form.append("password", "user1");
+
+    var settings = {
+      "async": true,
+      "crossDomain": true,
+      "url": "http://localhost:8080/api",
+      "method": "POST",
+      "headers": {
+          // "authorization": "Basic dXNlcjFAZXhhbXBsZS5jb206dXNlcjE=",
+          "Authorization": "Basic " + btoa("user1@example.com:user1"),
+          // "Access-Control-Request-Method": "OPTIONS",
+          "cache-control": "no-cache"
+      },
+      "processData": false,
+      "contentType": false,
+      "mimeType": "multipart/form-data",
+      "data": form
+    };
+
+    $.ajax(settings).done(function (response) {
+      console.log(response);
+    });
+        
+        
+    // Another example:
+    /*var access_token = 'pwwbkvv7abqzonnvztpea91ich7vprwdorbt4w4m';
+    jQuery.ajax( {
+        url: 'https://localhost:8443/me/',
+        type: 'POST',
+        data: { content: 'testing testing' },
+        beforeSend : function( xhr ) {
+            xhr.setRequestHeader( 'Authorization', 'BEARER ' + access_token );
+        },
+        success: function( response ) {
+            // response
+        }
+    } );*/
+
+
+    </script>
+
+</head>
+<body>
+    <h1>ORIG Spring Boot Ajax OAuth2 Test (w/ BASIC Authentication)</h1>
+    <div id = 'bootFeed'>
+        <p class="message"><b>Application Message Returned:</b> </p>
+    </div>
+
+    <h2><a href="index.html">Spring Boot Ajax OAuth2 Test (w/ BASIC Authentication) example</a></h2>
+</body>
+</html>

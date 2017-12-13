@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title id="pageTitle">Calendar User Signup</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/messages :: messages"></th:block> /*/-->
+
+    <!--/*--><!--@thymesVar id="signupForm" type="com.packtpub.springsecurity.web.model.SignupForm"--><!--*/-->
+    <form action="#" th:action="@{/signup/new}" th:object="${signupForm}" method="post" class="form-horizontal">
+        <errors path="*" element="div" cssClass="alert alert-error"/>
+        <fieldset>
+            <legend>User Information</legend>
+
+            <div class="control-group">
+                <label class="control-label" for="firstName">First Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{firstName}" id="firstName"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="lastName">Last Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{lastName}" id="lastName"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email">Email (Username)</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{email}" id="email"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input type="password" class="input-xlarge" th:field="*{password}" id="password"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input id="submit" class="btn" type="submit" value="Create Account"/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+    <br />
+    <h3>Social Login</h3>
+
+    <form th:action="@{/signin/twitter}" method="POST" class="form-horizontal">
+        <input type="hidden" name="scope" value="public_profile" />
+        <div class="form-actions">
+            <input id="twitter-submit" class="btn" type="submit" value="Login using Twitter"/>
+        </div>
+    </form>
+    <br />
+    <form th:action="@{/signin/facebook}" method="POST" class="form-horizontal">
+        <input type="hidden" name="scope" value="public_profile" />
+        <div class="form-actions">
+            <input id="facebook-submit" class="btn" type="submit" value="Login using Facebook"/>
+        </div>
+    </form>
+    <br />
+    <form th:action="@{/signin/linkedin}" method="POST" class="form-horizontal">
+        <input type="hidden" name="scope" value="r_basicprofile,r_emailaddress" />
+        <div class="form-actions">
+            <input id="linkedin-submit" class="btn" type="submit" value="Login using Linkedin"/>
+        </div>
+    </form>
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

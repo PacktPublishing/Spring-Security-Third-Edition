@@ -1,0 +1,100 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+spring:
+  profiles:
+    active: TLS
+#    active: default
+
+#  resource:
+#    chain:
+#      enabled: true
+
+  ##---------------------------------------------------------------------------##
+  ## H2 Servlet setting
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
+
+  # Embedded Database
+  datasource:
+    url: jdbc:h2:mem:dataSource;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    continue-on-error: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    # These properties are only needed to dump the JPA generated ddl to a file:
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: build/create.sql
+
+##---------------------------------------------------------------------------##
+# OAuth2 Configuration:
+security:
+  oauth2:
+    # Client Config:
+    client:
+      # Basic Authentication credentials for OAuth2
+      clientId: oauthClient1
+      clientSecret: oauthClient1Password
+
+#      accessTokenUri: https://github.com/login/oauth/access_token
+#      userAuthorizationUri: https://github.com/login/oauth/authorize
+#      clientAuthenticationScheme: form
+
+      authorizedGrantTypes: authorization_code,refresh_token,password
+      scope: openid
+
+    # Resource Config:
+    resource:
+      jwt:
+        keyPair:
+          alias: jbcpoauth2client
+          storePassword: changeit
+#          alias: mytestkey
+#          storePassword: mystorepass
+
+##---------------------------------------------------------------------------##
+# Turn off Security for Actuator:
+management:
+  security:
+    enabled: false
+
+
+##---------------------------------------------------------------------------##
+## TLS Profile Properties
+
+---
+
+spring:
+  profiles: TLS
+
+## Chapter 8 TLS over HTTP/1.1:
+## https://localhost:8443
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    keyStore: "classpath:keys/jbcp_clientauth.p12"
+    keyStorePassword: changeit
+    keyStoreType: PKCS12
+    keyAlias: jbcpclient
+    protocol: TLS
+
+##---------------------------------------------------------------------------##

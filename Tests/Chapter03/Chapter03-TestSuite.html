@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+	<title>Untitled Test Suite</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">calendar-login-my_events-user1</td></tr>
+</thead>
+<tbody>
+<tr>
+    <td>open</td>
+    <td>http://localhost:8080/login
+        <datalist>
+            <option>http://localhost:8080/login</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>name=username
+        <datalist>
+            <option>name=username</option>
+            <option>//input[@name='username']</option>
+            <option>//input</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>name=username
+        <datalist>
+            <option>name=username</option>
+            <option>//input[@name='username']</option>
+            <option>//input</option>
+        </datalist>
+    </td>
+    <td>user1@example.com</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>name=password
+        <datalist>
+            <option>name=password</option>
+            <option>//input[@name='password']</option>
+            <option>//tr[2]/td[2]/input</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>type</td>
+    <td>name=password
+        <datalist>
+            <option>name=password</option>
+            <option>//input[@name='password']</option>
+            <option>//tr[2]/td[2]/input</option>
+        </datalist>
+    </td>
+    <td>user1</td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>name=submit
+        <datalist>
+            <option>name=submit</option>
+            <option>//input[@name='submit']</option>
+            <option>//tr[3]/td/input</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=navMyEventsLink
+        <datalist>
+            <option>id=navMyEventsLink</option>
+            <option>link=My Events</option>
+            <option>//a[contains(text(),'My Events')]</option>
+            <option>//a[@id='navMyEventsLink']</option>
+            <option>//div[@id='navbar']/ul/li[3]/a</option>
+            <option>//a[contains(@href, '/events/my')]</option>
+            <option>//li[3]/a</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>link=Conference Call
+        <datalist>
+            <option>link=Conference Call</option>
+            <option>//a[contains(text(),'Conference Call')]</option>
+            <option>//a[contains(@href, '/events/101')]</option>
+            <option>//tr[2]/td[4]/a</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+<tr>
+    <td>click</td>
+    <td>id=navMyEventsLink
+        <datalist>
+            <option>id=navMyEventsLink</option>
+            <option>link=My Events</option>
+            <option>//a[contains(text(),'My Events')]</option>
+            <option>//a[@id='navMyEventsLink']</option>
+            <option>//div[@id='navbar']/ul/li[3]/a</option>
+            <option>//a[contains(@href, '/events/my')]</option>
+            <option>//li[3]/a</option>
+        </datalist>
+    </td>
+    <td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

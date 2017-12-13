@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title id="pageTitle">Calendar User Signup</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/messages :: messages"></th:block> /*/-->
+
+    <!--/*--><!--@thymesVar id="signupForm" type="com.packtpub.springsecurity.web.model.SignupForm"--><!--*/-->
+    <form action="#" th:action="@{/signup/new}" th:object="${signupForm}" method="post" cssClass="form-horizontal">
+        <errors path="*" element="div" cssClass="alert alert-error"/>
+        <fieldset>
+            <legend>User Information</legend>
+
+            <div class="control-group">
+                <label class="control-label" for="firstName">First Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{firstName}" id="firstName"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="lastName">Last Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{lastName}" id="lastName"/>
+                </div>
+            </div>
+            <div th:class="${#fields.hasErrors('email')} ? 'alert alert-danger' :'control-group' ">
+                <label class="control-label" for="email">Email (Username)</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{email}" id="email"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input type="password" class="input-xlarge" th:field="*{password}" id="password"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <!--<input
+                            type="hidden"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}" />-->
+                    <input id="submit" class="btn" type="submit" value="Create Account"/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

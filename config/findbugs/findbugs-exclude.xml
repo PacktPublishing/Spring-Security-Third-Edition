@@ -1,0 +1,59 @@
+<FindBugsFilter>
+
+    <!-- http://stackoverflow.com/questions/7568579/eclipsefindbugs-exclude-filter-files-doesnt-work -->
+    <Match>
+        <Class name="~.*\.R\$.*"/>
+    </Match>
+    <Match>
+        <Class name="~.*\.Manifest\$.*"/>
+    </Match>
+
+    <!-- All bugs in test classes, except for JUnit-specific bugs -->
+    <Match>
+        <Class name="~.*\.*Test.*"/>
+        <Not>
+            <Bug code="IJU"/>
+        </Not>
+    </Match>
+    <Match>
+        <Class name="~.*\.*Test.*"/>
+        <Not>
+            <Bug pattern="SE_BAD_FIELD, EI_EXPOSE_REP, EI_EXPOSE_REP2"/>
+        </Not>
+    </Match>
+    <Match>
+        <!-- Ignore test entities as these will often have unused things -->
+        <Package name="~org\.mongodb\.morphia\.testmappackage.*"/>
+    </Match>
+    <Match>
+        <Class name="org.mongodb.morphia.testmodel.Hotel"/>
+        <Bug pattern="EI_EXPOSE_REP, EI_EXPOSE_REP2"/>
+    </Match>
+    <Match>
+        <Class name="org.mongodb.morphia.utils.E1"/>
+        <Bug pattern="SS_SHOULD_BE_STATIC"/>
+    </Match>
+    <Match>
+        <Class name="relocated.morphia.org.apache.commons.collections.ReferenceMap"/>
+        <Bug pattern="VO_VOLATILE_INCREMENT, URF_UNREAD_FIELD, WMI_WRONG_MAP_ITERATOR"/>
+    </Match>
+    <Match>
+        <Class name="relocated.morphia.org.apache.commons.collections.ReferenceMap$EntryIterator"/>
+        <Bug pattern="VO_VOLATILE_INCREMENT, URF_UNREAD_FIELD, WMI_WRONG_MAP_ITERATOR"/>
+    </Match>
+    <Match>
+        <Class name="org.mongodb.morphia.mapping.MappedClass"/>
+        <Bug pattern="WMI_WRONG_MAP_ITERATOR"/>
+    </Match>
+    <Match>
+        <Bug code="SQL,XSS,J2EE,SW,STI,DL,JLM,MWN,NN,RS,UL,HRS,PT,MTIA,XFB"/>
+    </Match>
+    <Match>
+        <Bug category="I18N,MT_CORRECTNESS,SECURITY,PERFORMANCE"/>
+    </Match>
+    <Match>
+        <Class name="org.mongodb.morphia.aggregation.Sort"/>
+        <Bug pattern="NM_SAME_SIMPLE_NAME_AS_SUPERCLASS"/>
+    </Match>
+
+</FindBugsFilter>

@@ -1,0 +1,19 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+spring:
+
+  ## LDAP
+  ldap:
+    embedded:
+      ldif: classpath:/ldif/calendar.ldif
+      baseDn: dc=jbcpcalendar,dc=com
+      port: ${LDAP_PORT:33389}
+#      credential:
+#        username: user
+#        password: secret
+
+##---------------------------------------------------------------------------##

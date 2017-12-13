@@ -1,0 +1,100 @@
+#------------------------------------------------------------------------------#
+# Application YAML #
+# inside ./src/main/resources/application.yml
+#------------------------------------------------------------------------------#
+debug: false
+
+spring:
+  profiles:
+    active: default
+
+#  resource:
+#    chain:
+#      enabled: true
+
+  ##---------------------------------------------------------------------------##
+  ## H2 Servlet setting
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /admin/h2
+
+  # Embedded Database
+  datasource:
+    url: jdbc:h2:mem:dataSource;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+    continue-on-error: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    # These properties are only needed to dump the JPA generated ddl to a file:
+    properties:
+      javax:
+        persistence:
+          schema-generation:
+            create-source: metadata
+            scripts:
+              action: create
+              create-target: build/create.sql
+
+
+##---------------------------------------------------------------------------##
+# OAuth2 Configuration:
+      # Basic Authentication credentials
+#      clientId: oauthClient1
+#      clientSecret: oauthClient1Password
+
+oauth.resource: https://localhost:8443/api
+oauth.token: https://localhost:8443/oauth/token
+
+oauth.resource.id: microservice-test
+oauth.resource.client.id: oauthClient1
+oauth.resource.client.secret: oauthClient1Password
+
+#oauth.resource: http://localhost:8080/api
+#oauth.token: http://localhost:8080/oauth/token
+
+##---------------------------------------------------------------------------##
+# Turn off Security for Actuator:
+management:
+  security:
+    enabled: false
+
+security:
+  basic:
+    enabled: false
+  user:
+    name: oauthClient1
+    password: oauthClient1Password
+
+
+server:
+  port: 8888
+
+  ssl:
+    enabled: true
+    keyStore: "classpath:keys/jbcp_clientauth.p12"
+    keyStorePassword: changeit
+    keyStoreType: PKCS12
+    keyAlias: jbcpclient
+    protocol: TLS
+
+##---------------------------------------------------------------------------##
+## TCP-MON PROXY Profile Properties
+
+---
+
+spring:
+  profiles: PROXY
+
+server:
+  port: 9999
+
+
+##---------------------------------------------------------------------------##

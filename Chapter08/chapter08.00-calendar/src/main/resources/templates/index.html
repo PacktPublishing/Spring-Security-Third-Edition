@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title id="pageTitle">Welcome to myCalendar!</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <p>Chapter 08.00: Below you can find some highlights about myCalendar. Each sample will have a slightly different summary depending on what has been done.</p>
+    <h2>JDBC-based Authentication</h2>
+    <ul>
+        <li>The functionality hasn't changed since the last checkpoint, but feel free to give it a try.</li>
+        <li>Select a link that requires authentication and observe the new login page.</li>
+        <li>Try typing an invalid username/password and viewing the error message</li>
+        <li>Try logging in as an admin and viewing all events. Notice we are able to view all the events</li>
+        <li>Try logging in as a regular user and viewing all events (notice we get an access denied)</li>
+        <hr />
+        <li><a id="eventsLink" th:href="@{events/}">All Events</a> - shows all events for all users, but only allows administrators to access the page.</li>
+        <li><a id="myEventsLink" th:href="@{events/my}">My Events</a> - shows all events that user1@example.com is the owner or attendee. We will discuss in Chapter 3 how to obtain the current user's events.</li>
+        <li><a id="createEventLink" th:href="@{events/form}">Create Event</a> - will allow creating a new Event with user1@example.com as the owner. We will discuss in Chapter 3 how to make the current user the owner.</li>
+        <li><a id="logoutLink" th:href="@{/logout}">Logout</a> - we haven't discussed it yet, but you can logout using j_spring_security_logout. Later in in this chapter we will discuss how to customize logout and provide a logout link.</li>
+        <li>
+            <a id="h2Link" th:href="@{admin/h2/}" target="_blank">H2 Database Console</a> - Allows you to interact with the database using a web console. To use it:
+            <ul>
+                <li>Click the link above.</li>
+                <li>Ensure that Generic H2 (Embedded) is selected</li>
+                <li>Ensure that org.h2.Driver is the Driver Class</li>
+                <li>Enter <strong>jdbc:h2:mem:dataSource</strong> as the JDBC URL</li>
+                <li>Ensure that the username is sa</li>
+                <li>Ensure the password is left empty</li>
+                <li>Click Connect</li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

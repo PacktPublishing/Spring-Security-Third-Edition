@@ -1,0 +1,56 @@
+/*
+ * Chapter 06 Calendar
+ *
+ * @author Mick Knutson
+ */
+buildscript {
+	ext {}
+	repositories {
+//        jcenter()
+        maven { url "https://plugins.gradle.org/m2/" }
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'org.springframework.boot'
+
+// Spring Security 4, for chapter 6
+version = '4.6.03-SNAPSHOT'
+
+dependencies {
+
+    // JPA / ORM / Hibernate:
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+
+    // LDAP:
+    // Not sure if I need and/or want this starter:
+    compile('org.springframework.boot:spring-boot-starter-data-ldap')
+
+    compile("org.springframework.ldap:spring-ldap-core")
+    compile("org.springframework.security:spring-security-ldap")
+    // Due to a artifact resolution issue with Gradle,
+    // spring-tx must be pulled in or Gradle will fetch an older one that doesn’t work.
+    compile("org.springframework:spring-tx")
+    compile("com.unboundid:unboundid-ldapsdk")
+
+    // Security:
+	compile('org.springframework.boot:spring-boot-starter-security')
+
+
+    // Web:
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+
+    // Tools:
+    compile('org.springframework.boot:spring-boot-starter-logging')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    runtime('org.springframework.boot:spring-boot-devtools')
+    compile('org.springframework.boot:spring-boot-configuration-processor')
+
+    // Testing
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
+
+} // The End...

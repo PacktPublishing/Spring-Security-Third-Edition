@@ -1,0 +1,141 @@
+<!--
+To access from this application:
+http://localhost:8080/index.html
+
+OLD:
+http://localhost:8080/index-BASIC.html
+
+http://user1:changeme@localhost:9999/api
+
+-->
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@3/dist/jquery.min.js"></script>
+    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+    <script type="text/javascript">
+
+        var form = new FormData();
+        form.append("grant_type", "password");
+        form.append("username", "user1@example.com");
+        form.append("password", "user1");
+
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "crossOrigin": true,
+            "url": "http://localhost:8080/oauth/token",
+            "method": "POST",
+            "headers": {
+            //     "Authorization": "Basic dXNlcjFAZXhhbXBsZS5jb206dXNlcjE=",
+                "Authorization": "Basic " + btoa("user1@example.com:user1"),
+                // "Access-Control-Request-Method": "OPTIONS",
+                "cache-control": "no-cache"
+            },
+            "processData": false,
+            "contentType": false,
+            "mimeType": "multipart/form-data",
+            "data": form
+        };
+
+
+
+        /*$(document).ready(function(){
+
+        $.ajax({
+            url: "http://localhost:8080/api",
+            // url: "http://localhost:8080/oauth/token",
+            type : "GET",
+            crossDomain:true,
+            crossOrigin:true,
+
+            // Add BASIC Authentication headers:
+            beforeSend: function (xhr) {
+                // Use BASIC Authentication
+                xhr.setRequestHeader ("Authorization", "Basic dXNlcjFAZXhhbXBsZS5jb206dXNlcjE=");
+                // xhr.setRequestHeader ("Authorization", "Basic " + btoa("user1@example.com:user1"));
+                xhr.setRequestHeader ("Access-Control-Request-Method", "OPTIONS");
+            },
+            error: function(xhr, status, errorThrown) {
+                //alert(status, errorThrown);
+                // Error block
+                console.log("xhr: " + xhr);
+                console.log("status: " + status);
+                console.log("errorThrown: " + errorThrown);
+            }
+        })
+            .then(function (data, status, xhr) {
+                // alert(data);
+                console.log("xhr: " + xhr);
+                console.log("status: " + status);
+                console.log("data: " + data);
+
+                $('.message').append(data);
+
+            });
+
+
+            $.ajax(settings).done(function (response) {
+                console.log(response);
+                $('.message').append(data);
+
+            });
+
+
+        });*/
+
+
+        function oauth (uri, method, json) {
+            return $.ajax({
+                url: orgProps.serverOrigin + ensurePrecedingSlash(uri),
+                type: method,
+                headers: (function () {
+                    var result = {
+                        "Access-Control-Request-Headers": [
+                            "X-Requested-With",
+                            "Authorization"
+                        ],
+                        "Access-Control-Request-Method": method
+                    };
+
+                    var token = jwt.getToken();
+                    if (token !== undefined && token !== null) {
+                        result.Authorization = restoreBearerPrefix(token);
+                    }
+
+                    return result;
+                })(),
+                contentType: "application/json; charset=utf-8",
+                data: (function () {
+                    if (json !== undefined) {
+                        return JSON.stringify(json);
+                    }
+                    return null;
+                })()
+            })
+                .done(function (data, status, jqXHR) {
+                    var token = jqXHR.getResponseHeader("Authorization");
+                    jwt.storeToken(token);
+                });
+        // });
+
+    </script>
+
+</head>
+<body>
+    <h1>NEW Spring Boot Ajax OAuth2 Test (w/ BASIC Authentication)</h1>
+    <div id = "resourceServerFeed">
+        <p class="message"><b>Application Message Returned:</b> </p>
+    </div>
+
+    <h2><a href="index.html">Spring Boot Ajax OAuth2 Test (w/ BASIC Authentication) example</a></h2>
+</body>
+</html>

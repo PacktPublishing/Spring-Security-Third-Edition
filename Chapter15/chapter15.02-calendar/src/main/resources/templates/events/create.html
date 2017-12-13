@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title id="pageTitle">Create Event</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/messages :: messages"></th:block> /*/-->
+
+    <!--/*--><!--@thymesVar id="createEventForm" type="com.packtpub.springsecurity.web.model.CreateEventForm"--><!--*/-->
+    <form action="#" th:action="@{/events/new}" th:object="${createEventForm}" method="post" cssClass="form-horizontal">
+        <errors path="*" element="div" cssClass="alert alert-error"/>
+        <fieldset>
+            <legend>Event Information</legend>
+            <div class="control-group">
+                <label class="control-label" for="attendeeEmail">Attendee Email</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{attendeeEmail}" id="attendeeEmail"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="when">Event Date/Time (yyyy-MM-dd HH:mm)</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{when}" id="when" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="summary">Summary</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{summary}" id="summary"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="description">Description</label>
+                <div class="controls">
+                    <textarea class="input-xlarge" th:field="*{description}" id="description" rows="5" cols="25"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <!--<input
+                            type="hidden"
+                            th:name="${_csrf.parameterName}"
+                            th:value="${_csrf.token}" />-->
+                    <input id="submit" type="submit" value="Create"/>
+                    <input id="auto" type="submit" name="auto" value="Auto Populate Form"/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>

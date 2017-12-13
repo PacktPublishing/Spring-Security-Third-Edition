@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title id="pageTitle" th:text="'Account - ' + ${user.username}"></title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <h2 id="summary" th:text="'Account - ' + ${user.username}">Account Details</h2>
+
+    <dl>
+        <dt>Username</dt>
+        <dd id="username" th:text="${user.username}">ChuckNorris</dd>
+        <dd>&nbsp;</dd>
+        <dt>DN</dt>
+        <dd id="dn" th:text="${user.dn}"></dd>
+        <dd>&nbsp;</dd>
+
+        <span th:if="${isLdapPerson}">
+
+            <dt>Description</dt>
+            <dd id="description" th:text="${user.description}"></dd>
+            <dd>&nbsp;</dd>
+            <dt>Telephone</dt>
+            <dd id="telephoneNumber" th:text="${user.telephoneNumber}"></dd>
+            <dd>&nbsp;</dd>
+            <dt>Full Name(s)</dt>
+
+            <span th:each="cn : ${user.cn}">
+                <dd th:text="${cn}"></dd>
+            </span>
+            <dd>&nbsp;</dd>
+        </span>
+
+        <span th:if="${isLdapInetOrgPerson}">
+            <dt>Email</dt>
+            <dd id="email" th:text="${user.mail}"></dd>
+            <dd>&nbsp;</dd>
+            <dt>Street</dt>
+            <dd id="street" th:text="${user.street}"></dd>
+            <dd>&nbsp;</dd>
+        </span>
+    </dl>
+
+</div>
+
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+
+</body>
+</html>
