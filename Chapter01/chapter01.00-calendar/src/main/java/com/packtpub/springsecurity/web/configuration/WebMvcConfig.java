@@ -63,6 +63,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter
                 .addResourceLocations("/resources/")
                 .setCachePeriod(0) //Set to 0 in order to send cache headers that prevent caching
         ;
+		registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/").resourceChain(false);
     }
 
     @Override

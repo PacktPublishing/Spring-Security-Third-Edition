@@ -59,6 +59,10 @@ dependencies {
 
     compile 'joda-time:joda-time'
 
+    // webjars
+    compile 'org.webjars:jquery:2.2.1'
+    compile 'org.webjars:jquery-ui:1.11.4'
+    compile 'org.webjars:bootstrap:3.3.6'
 
     // Tomcat Plugin
     def tomcatVersion = '8.0.42'
